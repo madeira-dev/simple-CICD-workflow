@@ -8,13 +8,24 @@ on:
         - 'index.html'
 
 jobs:
-  build-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Upload artifact
+
+      - name: Create Deployment Directory
+        run: |
+         mkdir -p _site
+         cp index.html _site/
+
+      - name: Archive Artifact
+        run: tar -czf site.tar.gz _site/
+
+      - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
+
       - name: Deploy to Pages
         uses: actions/deploy-pages@v4
         with:
